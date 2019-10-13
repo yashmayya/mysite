@@ -5,7 +5,7 @@ from flask import Flask, render_template, request, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, LoginManager, UserMixin, logout_user, login_required, current_user
 from flask_migrate import Migrate
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime
 
 app = Flask(__name__)
@@ -100,7 +100,16 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
+@app.route('/signup/', methods=['GET', 'POST'])
+def signup():
 
+    if request.method=='GET':
+        return render_template('signup_page.html')
 
+    else:
+        user = User(username=request.form['username'], password_hash=generate_password_hash(request.form["password"]))
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for('login'))
 
 
