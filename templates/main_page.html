@@ -20,6 +20,14 @@
                     </button>
                     <a class="navbar-brand" href="#">My scratchpad</a>
                 </div>
+
+                <ul class="nav navbar-nav navbar-right">
+                    {% if current_user.is_authenticated %}
+                        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                    {% else %}
+                        <li><a href="{{ url_for('login') }}">Login</a></li>
+                    {% endif %}
+                </ul>
             </div>
         </nav>
 
@@ -32,13 +40,15 @@
             {% endfor %}
             <br><br>
 
-            <div class="row">
-                <form action="." method="POST">
-                    <textarea name = "contents" class="form-control" placeholder = "Enter a comment"></textarea>
-                    <br>
-                    <input type="submit" class = "btn btn-primary" value = "Post comment">
-                </form>
-            </div>
+            {% if current_user.is_authenticated %}
+                <div class="row">
+                    <form action="." method="POST">
+                        <textarea name = "contents" class="form-control" placeholder = "Enter a comment"></textarea>
+                        <br>
+                        <input type="submit" class = "btn btn-primary" value = "Post comment">
+                    </form>
+                </div>
+            {% endif %}
 
         </div><!-- /.container -->
     </body>
